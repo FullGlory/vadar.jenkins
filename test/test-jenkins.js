@@ -1,54 +1,43 @@
 var jenkins = require('../lib/jenkins'),
-sys = require('util');
-/*
+	sys = require('util');
+
 module.exports['whenAnInvalidRequestIsMadeForJobsFromAJenkinsInstance'] = {
 	thenAnExceptionIsRaised: function(test) {
 		test.throws(function() {jenkins.getJobs(null, null)});
 		test.throws(function() {jenkins.getJobs('', null)});
+		test.throws(function() {jenkins.getJobs('x', null)});
 		test.done();
 	}
 };
-*/
+
 module.exports['whenARequestIsMadeForJobsFromAJenkinsInstance'] = {
 
 	setUp: function(callback) {
-		//this._testCallback = callback;
-		sys.log('setUp start');
-		jenkins.getJobs('http://www.ikasan.org/jenkins/', 
-			function(data) {
-				sys.log('setUp in callback');
-				sys.log(data);
-				this._jobs = data;
-				callback();			
-		});
-		/* Setup not complete until _getJobsCallback is called */
-		sys.log('setUp end');
+		// setup
+		this.url = 'http://www.ikasan.org/jenkins/';
+
+		callback();
 	},
 	tearDown: function(callback) {
 		// clean up
 		callback();
 	},
-	thenTheListOfJobsReturnedIsNotEmpty: function(test) {
-		sys.log('in test');
-		sys.log(this._jobs);
-		test.ok(this._jobs.length>0);
-		test.done();
-	}
-/*
-	,
-	thenTheNameOfEachJobReturnedIsNotNull: function(test) {
-		for(var i=0;i<this._jobs.length;i++)
-		{
-			test.ok(this._jobs[i].name != null);
-		}
-		test.done();
+	'thenTheListOfJobsReturnedIsNotEmpty' : function(test) {
+		jenkins.getJobs(this.url, 
+			function(jobList) {
+				test.ok(jobList.length > 0);
+				test.done();
+		});
 	},
-	thenTheNameOfEachJobReturnedIsNotEmpty: function(test) {
-		for(var i=0;i<this._jobs.length;i++)
-		{
-			test.ok(this._jobs[i].name.length>0);
-		}
-		test.done();
-	}	
-	*/
+	'thenTheNameOfEachJobReturnedIsNotNullOrEmpty' : function(test) {
+		jenkins.getJobs(this.url, 
+			function(jobList) {
+				for(var i=0;i < jobList.length;i++)
+				{
+					test.ok(jobList[i].name != null);
+					test.ok(jobList[i].name.length > 0);
+				}
+				test.done();
+		});		
+	}
 };

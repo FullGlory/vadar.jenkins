@@ -1,0 +1,14 @@
+{
+    "name": "vadar.jenkins",
+    "version": "1.0.0",
+    "description": "A CI module for vadar",
+    "contributors": [{ "name": "Paul Marshall", "email": "paul.marshall@wavecrestsoftware.co.uk" }],
+    "homepage": "https://github.com/fullglory/vadar.jenkins",
+    "directories" : { "lib" : "./lib" },
+    "main" : "./lib/jenkins",
+    "engines": { "node": ">= 0.8.x" },
+    "dependencies": {
+        "nodeunit": ">=0.5.0",
+        "restler"  : ">=2.0.1"
+    }
+}
